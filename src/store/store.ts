@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
+import matchesReducer from '../features/matches/matchesSlice.ts'
 
 const store = configureStore({
     reducer: {
-
+        matches: matchesReducer,
     },
 });
 
