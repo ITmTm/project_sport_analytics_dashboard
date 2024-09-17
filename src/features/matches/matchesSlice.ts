@@ -12,7 +12,7 @@ interface Match {
 interface MatchesState {
     matches: Match[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: SerializedError | null;
+    error: SerializedError | null | string;
 }
 
 const initialState: MatchesState = {
@@ -53,7 +53,7 @@ const matchesSlice = createSlice<MatchesState, {}, 'matches'>({
             // Теперь используем стандартный action.error.message для rejected
             .addCase(fetchMatches.rejected, (state: MatchesState, action) => {
                 state.status = 'failed';
-                state.error = action.error as SerializedError || { message: 'Что-то пошло не так' };    // Использование SerializedError для ошибки
+                state.error = action.payload || 'Что-то пошло не так';    // Использование SerializedError для ошибки
             });
     },
 });
