@@ -1,8 +1,11 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMatches } from "./matchesSlice.ts";
-import { RootState, AppDispatch } from "../../store/store.ts";
+
+import { fetchMatches } from "../features/matches/matchesSlice.ts";
+import { RootState, AppDispatch } from "../store/store.ts";
+
+import '../styles/matches.scss';
 
 const MatchesList: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
@@ -19,13 +22,14 @@ const MatchesList: React.FC = () => {
     let content;
 
     if (status === 'loading') {
-        content = <p>Загрузка....</p>
+        content = <p style={{ textAlign: "center" }}>Загрузка....</p>
     } else if (status === 'succeeded') {
         content = (
             <ul>
                 {matches.map((match) => (
                     <li key={match.idEvent}>
-                        {match.strEvent} - {match.dateEvent} {match.strTime}
+                        <time>{match.dateEvent} {match.strTime}</time>
+                        <span>{match.strEvent}</span>
                     </li>
                 ))}
             </ul>
