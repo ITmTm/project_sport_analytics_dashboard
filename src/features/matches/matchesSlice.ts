@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction, SerializedError} from "@reduxjs/toolkit";
 import { fetchMatchesAPI } from "./matchesAPI.ts";
 
 interface Match {
@@ -12,7 +12,7 @@ interface Match {
 interface MatchesState {
     matches: Match[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error: string | null;
+    error: SerializedError | null;
 }
 
 const initialState: MatchesState = {
@@ -27,7 +27,10 @@ export const fetchMatches = createAsyncThunk<Match[], void, { rejectValue: strin
         try {
             return await fetchMatchesAPI();
         } catch (err) {
-            return rejectWithValue('Ошибка при загрузке данных');
+            if (err instanceof Error) {
+                return rejectWithValue(err.message);
+            }
+            return rejectWithValue('Неизвестная ошибка')
         }
     }
 )
@@ -41,6 +44,7 @@ const matchesSlice = createSlice<MatchesState, {}, 'matches'>({
         builder
             .addCase(fetchMatches.pending, (state: MatchesState) => {
                 state.status = 'loading';
+                state.error = null;         // Сбрасываем ошибку при новой попытке
             })
             .addCase(fetchMatches.fulfilled, (state: MatchesState, action: PayloadAction<Match[]>) => {
                 state.status = 'succeeded';
@@ -49,7 +53,7 @@ const matchesSlice = createSlice<MatchesState, {}, 'matches'>({
             // Теперь используем стандартный action.error.message для rejected
             .addCase(fetchMatches.rejected, (state: MatchesState, action) => {
                 state.status = 'failed';
-                state.error = action.error.message || 'Что-то пошло не так';
+                state.error = action.error as SerializedError || { message: 'Что-то пошло не так' };    // Использование SerializedError для ошибки
             });
     },
 });
