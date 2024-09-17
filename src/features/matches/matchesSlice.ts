@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from 'axios';
+import { createSlice, createAsyncThunk, PayloadAction} from "@reduxjs/toolkit";
+import { fetchMatchesAPI } from "./matchesAPI.ts";
 
 interface Match {
     idEvent: string;
@@ -21,27 +21,33 @@ const initialState: MatchesState = {
     error: null,
 };
 
-export const fetchMatches = createAsyncThunk('matches/fetchMatches', async () => {
-    const response = await axios.get(
-        'https://www.thesportsdb.com/api/v1/json/3/eventsnextleague.php?id=4328'
-    );
-    return response.data.events;
-});
+export const fetchMatches = createAsyncThunk<Match[], void, { rejectValue: string}> (
+    'matches/fetchMatches',
+    async (_, { rejectWithValue }) => {
+        try {
+            return await fetchMatchesAPI();
+        } catch (err) {
+            return rejectWithValue('Ошибка при загрузке данных');
+        }
+    }
+)
 
-const matchesSlice = createSlice({
+// Создание слайс с типами
+const matchesSlice = createSlice<MatchesState, {}, 'matches'>({
     name: 'matches',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchMatches.pending, (state) => {
+            .addCase(fetchMatches.pending, (state: MatchesState) => {
                 state.status = 'loading';
             })
-            .addCase(fetchMatches.fulfilled, (state, action) => {
+            .addCase(fetchMatches.fulfilled, (state: MatchesState, action: PayloadAction<Match[]>) => {
                 state.status = 'succeeded';
                 state.matches = action.payload;
             })
-            .addCase(fetchMatches.rejected, (state, action) => {
+            // Теперь используем стандартный action.error.message для rejected
+            .addCase(fetchMatches.rejected, (state: MatchesState, action) => {
                 state.status = 'failed';
                 state.error = action.error.message || 'Что-то пошло не так';
             });
