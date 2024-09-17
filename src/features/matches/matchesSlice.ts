@@ -54,6 +54,7 @@ const matchesSlice = createSlice<MatchesState, {}, 'matches'>({
             .addCase(fetchMatches.rejected, (state: MatchesState, action) => {
                 state.status = 'failed';
                 state.error = action.payload || 'Что-то пошло не так';    // Использование SerializedError для ошибки
+                console.error('Ошибка при загрузке матчей:', action.error.message)
             });
     },
 });
