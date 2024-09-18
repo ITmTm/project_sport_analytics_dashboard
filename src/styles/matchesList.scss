@@ -22,10 +22,17 @@
     padding: 15px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform .5s ease, opacity .5s ease, box-shadow .3s ease, .5s ease;
     &:hover {
-      transform: translateY(-3px);
+      transition: .5s ease;
+      background-color: #eadede;
       box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+    }
+    &.loaded {
+      transform: translateY(0);
+      opacity: 1;
     }
 
     span {
