@@ -1,0 +1,44 @@
+.theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 60px;
+  height: 30px;
+  background: #f1f1f1;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  transition: background-color .3s ease, transform .3s ease;
+
+  .toggle-icon {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .3s ease;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity .3s ease;
+    }
+  }
+
+  &.light {
+    background: linear-gradient(135deg, #fefbff 0%, #f8e1e1 100%);
+    .toggle-icon {
+      transform: translateX(0);
+    }
+  }
+
+  &.dark {
+    background: linear-gradient(135deg, #444a6a 0%, #23262b 100%);
+    .toggle-icon {
+      transform: translateX(30px);
+    }
+  }
+}
