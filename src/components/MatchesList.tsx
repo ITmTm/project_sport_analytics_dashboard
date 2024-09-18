@@ -15,6 +15,7 @@ const MatchesList: React.FC = () => {
     const [sortedMatches, setSortedMatches] = useState(matches);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
     const [loaded, setLoaded] = useState(false);
+    const [isDark, setIsDark] = useState(false);
 
     useEffect(() => {
         if (status === 'idle') {
@@ -44,6 +45,11 @@ const MatchesList: React.FC = () => {
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')  // Переключение порядка
     }
 
+    const toggleTheme = () => {
+        setIsDark(!isDark);
+        document.body.classList.toggle('dark-theme', !isDark);
+    }
+
     let content;
 
     if (status === 'loading') {
@@ -71,6 +77,16 @@ const MatchesList: React.FC = () => {
 
     return (
         <div className='matches'>
+            <div className={`theme-toggle ${isDark ? 'dark' : 'light'}`} onClick={toggleTheme}>
+                <div className='toggle-icon'>
+                    {isDark ? (
+                        <img src="https://cdn.icon-icons.com/icons2/1469/PNG/512/icon11_101144.png" alt='Dark Theme'/>
+                    ) : (
+                        <img
+                            src="https://cdn.icon-icons.com/icons2/1152/PNG/512/1486506258-moon-night-astronomy-nature-moon-phase-sleep_81483.png" alt='Light Theme'/>
+                    )}
+                </div>
+            </div>
             <h2>Предстоящие матчи</h2>
             {content}
         </div>
