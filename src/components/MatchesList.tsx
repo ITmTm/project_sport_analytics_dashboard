@@ -34,6 +34,22 @@ const MatchesList: React.FC = () => {
         }
     }, [matches, status]);
 
+    // Добавление в LocalStorage для сохранения темы
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setIsDark(savedTheme === 'dark');
+            document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+        }
+    }, []);
+
+    const toggleTheme = () => {
+        const newTheme = !isDark ? 'dark' : 'light';
+        setIsDark(!isDark);
+        document.body.classList.toggle('dark-theme', !isDark);
+        localStorage.setItem('theme', newTheme);
+    }
+
     // Функция для изменения порядка сортировки
     const handleSort = () => {
         const sorted = [...sortedMatches].sort((a, b) => {
@@ -43,11 +59,6 @@ const MatchesList: React.FC = () => {
         });
         setSortedMatches(sorted);
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')  // Переключение порядка
-    }
-
-    const toggleTheme = () => {
-        setIsDark(!isDark);
-        document.body.classList.toggle('dark-theme', !isDark);
     }
 
     let content;
