@@ -13,7 +13,8 @@ const MatchesList: React.FC = () => {
     const error = useSelector((state: RootState) => state.matches.error);
 
     const [sortedMatches, setSortedMatches] = useState(matches);
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         if (status === 'idle') {
@@ -28,6 +29,7 @@ const MatchesList: React.FC = () => {
                 return new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime();
             })
             setSortedMatches(sorted);
+            setTimeout(() => setLoaded(true), 100)      // Задержка перед показом для эффекта
         }
     }, [matches, status]);
 
@@ -55,7 +57,7 @@ const MatchesList: React.FC = () => {
 
                 <ul className='matches-list'>
                     {sortedMatches.map((match) => (
-                        <li key={match.idEvent} className='matches-card'>
+                        <li key={match.idEvent} className={`matches-card ${loaded ? 'loaded' : ''}`}>
                             <time>{match.dateEvent} {match.strTime}</time>
                             <span>{match.strEvent}</span>
                         </li>
