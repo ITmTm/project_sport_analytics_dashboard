@@ -29,7 +29,7 @@ const MatchesList: React.FC = () => {
                 return new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime();
             })
             setSortedMatches(sorted);
-            setTimeout(() => setLoaded(true), 100)      // Задержка перед показом для эффекта
+            setTimeout(() => setLoaded(true), 400)      // Задержка перед показом для эффекта
         }
     }, [matches, status]);
 
