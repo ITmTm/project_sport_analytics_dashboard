@@ -83,7 +83,7 @@ const MatchesList: React.FC = () => {
             </>
         );
     } else if (status === 'failed') {
-        content = <p style={{ textAlign: "center" }}>{error}</p>;
+        content = <p style={{ textAlign: "center", fontWeight: '600', fontSize: '20px', color: 'red' }}>{error}: Use a VPN</p>;
     }
 
     return (
