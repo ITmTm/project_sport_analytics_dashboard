@@ -83,7 +83,7 @@ const MatchesList: React.FC = () => {
             </>
         );
     } else if (status === 'failed') {
-        content = <p>{error}</p>;
+        content = <p style={{ textAlign: "center" }}>{error}</p>;
     }
 
     return (
