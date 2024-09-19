@@ -1,9 +1,68 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap");
+.theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 60px;
+  height: 30px;
+  background: #f1f1f1;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.theme-toggle .toggle-icon {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+.theme-toggle .toggle-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+.theme-toggle.light {
+  background: linear-gradient(135deg, #fefbff 0%, #f8e1e1 100%);
+}
+.theme-toggle.light .toggle-icon {
+  transform: translateX(0);
+}
+.theme-toggle.dark {
+  background: linear-gradient(135deg, #444a6a 0%, #23262b 100%);
+}
+.theme-toggle.dark .toggle-icon {
+  transform: translateX(30px);
+}
+
 * {
   font-family: "Montserrat", sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --bg-color-light: #fff;
+  --text-color-light: #000;
+  --bg-color-dark: #333;
+  --text-color-dark: #fff;
+}
+
+body {
+  background-color: var(--bg-color-light);
+  color: var(--text-color-light);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+body.dark-theme {
+  background-color: var(--bg-color-dark);
+  color: var(--text-color-dark);
 }
 
 ul, li, dl {
