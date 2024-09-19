@@ -1,10 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap');
+@import "dark-theme";
+
 
 * {
   font-family: 'Montserrat', sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --bg-color-light: #fff;
+  --text-color-light: #000;
+  --bg-color-dark: #333;
+  --text-color-dark: #fff;
+}
+
+body {
+  background-color: var(--bg-color-light);
+  color: var(--text-color-light);
+  transition: background-color .3s ease, color .3s ease;
+  &.dark-theme {
+    background-color: var(--bg-color-dark);
+    color: var(--text-color-dark);
+  }
 }
 
 ul, li, dl {
