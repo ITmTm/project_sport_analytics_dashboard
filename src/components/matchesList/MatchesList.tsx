@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchMatches } from "../features/matches/matchesSlice.ts";
-import { RootState, AppDispatch } from "../store/store.ts";
+import { fetchMatches } from "../../features/matches/matchesSlice.ts";
+import { RootState, AppDispatch } from "../../store/store.ts";
 
-import '../styles/matchesList.scss';
+import './matchesList.scss';
 
 const MatchesList: React.FC = () => {
     const dispatch= useDispatch<AppDispatch>();
