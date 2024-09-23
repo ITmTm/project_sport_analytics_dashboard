@@ -1,7 +1,7 @@
 import * as React from "react";
-import MatchesList from "../components/MatchesList.tsx";
+import MatchesList from "../matchesList/MatchesList.tsx";
 
-import '../styles/app.scss'
+import './app.scss'
 
 const App: React.FC = () => {
     return (
