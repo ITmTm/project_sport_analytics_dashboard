@@ -75,6 +75,9 @@
     transform: rotate(360deg);
   }
 }
+.matches-stats {
+  margin-top: 50px;
+}
 
 @media (max-width: 768px) {
   .matches card {
