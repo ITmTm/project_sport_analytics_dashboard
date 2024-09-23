@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { fetchMatches } from "../../features/matches/matchesSlice.ts";
 import { RootState, AppDispatch } from "../../store/store.ts";
+import MatchStats from "../matchStats/MatchStats.tsx";
 
 import './matchesList.scss';
 
@@ -61,6 +62,13 @@ const MatchesList: React.FC = () => {
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')  // Переключение порядка
     }
 
+    // Пример данных статистики
+    const matchStats = {
+        'Победы команды А': 10,
+        'Победы команды B': 7,
+        'Ничьи': 3,
+    }
+
     let content;
 
     if (status === 'loading') {
@@ -80,6 +88,9 @@ const MatchesList: React.FC = () => {
                         </li>
                     ))}
                 </ul>
+
+                {/* Отображение статистики */}
+                <MatchStats stats={matchStats} />
             </>
         );
     } else if (status === 'failed') {
