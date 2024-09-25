@@ -5,34 +5,15 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 interface MatchStateProps {
-    stats: {
-        winsTeamA: number;      // Победа команды А
-        winsTeamB: number;      // Победа команды B
-        draws: number;          // Ничьи
-    };
-}
-
-interface CharData {
-    labels: string[];
-    datasets: {
-        label: string;
-        data: number;
-        backgroundColor: string[];
-        borderColor: string[];
-        borderWidth: number;
-    }
+    stats: { [key: string]: number };
 }
 
 const MatchStats: React.FC<MatchStateProps> = ({ stats }) => {
-    const [chartData, setChartData] = useState<CharData>({
-        labels: [],
-        datasets: []
-    });
+    const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
     useEffect(() => {
-            // Преобразование данных для диаграмм
-        const labels = ['Победа команды А', 'Победа команды B', 'Ничьи'];
-        const data = [stats.winsTeamA, stats.winsTeamB, stats.draws];
+        const labels = Object.keys(stats);
+        const data = Object.values(stats);
 
         setChartData({
             labels,
@@ -41,14 +22,14 @@ const MatchStats: React.FC<MatchStateProps> = ({ stats }) => {
                     label: 'Статистика по матчам',
                     data,
                     backgroundColor: [
-                        'rgba(255, 99, 132, .6)',       // Красный цвет для команды А
-                        'rgba(54, 162, 235, .6)',       // Синий цвет для команды B
-                        'rgba(255, 206, 86, .6)',       // Желтый цвет для ничьи
+                        'rgba(255, 99, 132, .6)',
+                        'rgba(54, 162, 235, .6)',
+                        'rgba(255, 206, 86, .6)',
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',        // Границы для команды А
-                        'rgba(54, 162, 235, 1)',        // Границы для команды B
-                        'rgba(255, 206, 86, 1)',        // Границы для ничьих
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
                     ],
                     borderWidth: 1,
                 },
