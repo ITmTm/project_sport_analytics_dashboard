@@ -5,6 +5,9 @@ import { fetchMatches } from "../../features/matches/matchesSlice.ts";
 import { RootState, AppDispatch } from "../../store/store.ts";
 import MatchStats from "../matchStats/MatchStats.tsx";
 
+import useTheme from "../../hooks/useTheme.ts";
+import useSortedMatches from "../../hooks/useSortedMatches.ts";
+
 import './matchesList.scss';
 
 const MatchesList: React.FC = () => {
@@ -13,10 +16,10 @@ const MatchesList: React.FC = () => {
     const status = useSelector((state: RootState) => state.matches.status);
     const error = useSelector((state: RootState) => state.matches.error);
 
-    const [sortedMatches, setSortedMatches] = useState(matches);
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const { isDark, toggleTheme } = useTheme();
+    const { sortedMatches, sortOrder, handleSort } = useSortedMatches(matches);
     const [loaded, setLoaded] = useState(false);
-    const [isDark, setIsDark] = useState(false);
+
 
     useEffect(() => {
         if (status === 'idle') {
@@ -26,41 +29,10 @@ const MatchesList: React.FC = () => {
 
     useEffect(() => {
         if (status === 'succeeded') {
-            // Сортировка матчей по возрастанию при первой загрузке
-            const sorted = [...matches].sort((a, b) => {
-                return new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime();
-            })
-            setSortedMatches(sorted);
-            setTimeout(() => setLoaded(true), 400)      // Задержка перед показом для эффекта
+            setTimeout(() => setLoaded(true), 400);  // Задержка для анимации
         }
     }, [matches, status]);
 
-    // Добавление в LocalStorage для сохранения темы
-    useEffect(() => {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            setIsDark(savedTheme === 'dark');
-            document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-        }
-    }, []);
-
-    const toggleTheme = () => {
-        const newTheme = !isDark ? 'dark' : 'light';
-        setIsDark(!isDark);
-        document.body.classList.toggle('dark-theme', !isDark);
-        localStorage.setItem('theme', newTheme);
-    }
-
-    // Функция для изменения порядка сортировки
-    const handleSort = () => {
-        const sorted = [...sortedMatches].sort((a, b) => {
-            return sortOrder === 'asc'
-                ? new Date(b.dateEvent).getTime() - new Date(a.dateEvent).getTime()
-                : new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime();
-        });
-        setSortedMatches(sorted);
-        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')  // Переключение порядка
-    }
 
     // Пример данных статистики
     const matchStats = {
