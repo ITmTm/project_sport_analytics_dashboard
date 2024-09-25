@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction, SerializedError} from "@reduxjs/toolkit";
 import { fetchMatchesAPI } from "./matchesAPI.ts";
 
-interface Match {
+export interface Match {
     idEvent: string;
     strEvent: string;
     dateEvent: string;
