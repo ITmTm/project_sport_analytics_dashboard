@@ -30,9 +30,8 @@ const MatchesList: React.FC = () => {
     useEffect(() => {
         if (status === 'succeeded') {
             setTimeout(() => setLoaded(true), 400);  // Задержка для анимации
-            console.log('rerender')
         }
-    }, [status]);
+    }, [matches, status]);
 
 
     // Пример данных статистики
