@@ -1,26 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { Match } from '../features/matches/matchesSlice.ts'
 
 const useSortedMatches = (matches: Match[]) => {
-    const [sortedMatches, setSortedMatches] = useState<Match[]>([]);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-    useEffect(() => {
+        // Использование useMemo для мемоизации сортированных матчей
+    const sortedMatches = useMemo(() => {
         // Сортировка матчей по возрастанию при первой загрузке
         const sorted = [...matches].sort((a, b) => {
-            return new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime();
-        })
-        setSortedMatches(sorted);
-    }, [matches]);
+            const dateA = new Date(`${a.dateEvent}T${a.strTime}`);
+            const dateB = new Date(`${b.dateEvent}T${b.strTime}`);
+            return dateA.getTime() - dateB.getTime();
+        });
+        return sortOrder === 'asc' ? sorted : sorted.reverse();     // Если порядок 'desc', то разворачиваем
+    }, [matches, sortOrder]);
 
     // Функция для изменения порядка сортировки
     const handleSort = () => {
-        const sorted = [...sortedMatches].sort((a, b) => {
-            return sortOrder === 'asc'
-                ? new Date(b.dateEvent).getTime() - new Date(a.dateEvent).getTime()
-                : new Date(a.dateEvent).getTime() - new Date(b.dateEvent).getTime();
-        });
-        setSortedMatches(sorted);
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')  // Переключение порядка
     };
 
